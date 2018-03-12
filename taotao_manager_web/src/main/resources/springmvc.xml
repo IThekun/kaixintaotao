@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 配置controller扫描 -->
+    <context:component-scan base-package="com.ithk.manager.controller" />
+
+    <!-- 配置注解驱动 -->
+    <mvc:annotation-driven />
+
+    <!-- 配置视图解析器 ,配置前缀和后缀 -->
+    <bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <dubbo:registry address="zookeeper://192.168.37.161:2181" />
+
+
+    <!--注册一个应用-->
+    <dubbo:application name="taotao-manager-web"/>
+   <!-- 设置接口请求超时时间-->
+    <dubbo:consumer timeout="1000000"  />
+
+
+    <!-- 使用注解方式暴露接口 -->
+<!--    <dubbo:annotation package="com.ithk.manager.controller" />-->
+    <dubbo:reference interface="com.ithk.manager.service.TestService" id="testServiceImpl" timeout="10000" ></dubbo:reference>
+    <dubbo:reference interface="com.ithk.manager.service.ItemCatService" id="itemCatServiceImpl" timeout="10000" ></dubbo:reference>
+    <!-- 包扫描 -->
+    <context:component-scan base-package="com.ithk.manager.controller"/>
+
+</beans>

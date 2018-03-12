@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 配置service扫描 -->
+
+    <context:component-scan base-package="com.ithk.manager.service"/>
+
+
+    <!-- 配置dubbo -->
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="taotao-manager-service"/>
+
+    <dubbo:registry address="zookeeper://192.168.37.161:2181"/>
+
+    <!-- 直连方式注册
+     <dubbo:registry address="N/A" />-->
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <!-- 使用注解方式暴露接口 -->
+    <!--  <dubbo:annotation package="com.ithk.manager.service.impl"  />-->
+    <dubbo:service interface="com.ithk.manager.service.TestService" ref="testServiceImpl"></dubbo:service>
+    <dubbo:service interface="com.ithk.manager.service.ItemCatService" ref="itemCatServiceImpl"></dubbo:service>
+</beans>
